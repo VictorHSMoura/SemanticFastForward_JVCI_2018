@@ -26,7 +26,6 @@ class MainWindow(object):
         self.setInputFileLabel()
         self.setExtractor()
         self.setSpeedUpEntry()
-        self.setWeightsEntries()
         self.setErrorLabel()
         self.setButtons()
         self.setMenu()
@@ -62,19 +61,6 @@ class MainWindow(object):
 
         self.speedUp.grid(row=2, column=1, columnspan=2, sticky=W+E+N+S)
 
-    def setWeightsEntries(self):
-        weight_names = ['α', 'β', 'γ', 'η']
-
-        for i in range(len(weight_names)):
-            Label(self.root,
-                  text = weight_names[i] + ' Weights: ').grid(row=i+3, sticky=W)
-            self.weights.append([tk.Entry(self.root, width=4) for _ in range(2)])
-            [weight.insert(0, '50') for weight in self.weights[i]]
-
-        for i in range(len(self.weights)):
-            for j in range(len(self.weights[i])):
-                self.weights[i][j].grid(row=i+3, column=j+1)
-
     def setErrorLabel(self):
         self.errorLabel = Label(self.root, text = '')
 
@@ -82,7 +68,7 @@ class MainWindow(object):
         self.buttons.append(
             Button(root, text='Speed Up and Stabilize', command=self.preProcessAndRun)
         )
-        self.buttons[0].grid(row=7, column=1, columnspan=2)
+        self.buttons[0].grid(row=3, column=1, columnspan=2)
 
 
     def setMenu(self):
@@ -110,7 +96,7 @@ class MainWindow(object):
         text.insert(tk.END, 'About\n\n', 'title')
         text.insert(tk.END, 'See more about the project on:\n', 'normal')
         text.insert(tk.END, '\thttps://github.com/verlab/SemanticFastForward'
-                            + '_ECCVW_2016\n', 'italics')
+                            + '_JVCI_2018\n', 'italics')
         text.configure(state='disabled')
         text.pack()
         aboutscreen.title('About')
@@ -135,9 +121,6 @@ class MainWindow(object):
         text.insert(tk.END, '3: ', 'bold_italics')
         text.insert(tk.END, 'Choose the speedup (speedup > 1).\n', 'normal')
         text.insert(tk.END, '4: ', 'bold_italics')
-        text.insert(tk.END, 'Choose graph weights α, β, γ, η. If you don\'t change '
-                            + 'anything, the default parameters will be used.\n', 'normal')
-        text.insert(tk.END, '5: ', 'bold_italics')
         text.insert(tk.END, 'Click on \'Speed Up and Stabilize\' and wait. Your '
                             + 'video is being accelerated and stabilized.\n', 'normal')
         
@@ -158,26 +141,20 @@ class MainWindow(object):
         video = Video(self.inputFile[2])
         speed = self.speedUp.get()
         extractor = self.extractor[0].get()
-            
-        alpha = [a.get() for a in self.weights[0]]
-        beta = [b.get() for b in self.weights[1]]
-        gama = [g.get() for g in self.weights[2]]
-        eta = [e.get() for e in self.weights[3]]
 
-        return (video, speed, extractor, alpha, beta, gama, eta)
+        return (video, speed, extractor)
 
     def preProcessAndRun(self):
-        video, speed, extractor,\
-            alpha, beta, gama, eta = self.preProcess()
+        video, speed, extractor = self.preProcess()
 
         try:
-            hyperlapse = SemanticHyperlapse(video, extractor, speed,
-                                            alpha, beta, gama, eta)           
+            #TODO: update SemanticHyperlapse object to remove the weights
+            hyperlapse = SemanticHyperlapse(video, extractor, speed, [], [], [], [])           
             self.createLogWindow()
             hyperlapse.run(self.addLog)
         except InputError as IE:
             self.errorLabel['text'] = IE.msg
-            self.errorLabel.grid(row=8, columnspan=3)
+            self.errorLabel.grid(row=4, columnspan=3)
     
     def videoStabilize(self):
         raise NotImplementedError
