@@ -12,3 +12,6 @@ AcceleratedVideoStabilizer/build/
 AcceleratedVideoStabilizer/experiment_hyperlapse.xml
 
 .vscode/
+
+# Optical Flow Objects
+Vid2OpticalFlowCSV/obj/
