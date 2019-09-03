@@ -12,14 +12,8 @@ class TestHyperlapse(unittest.TestCase):
 
         extractor = 'face'
         velocity = 10
-        
-        alpha = ['1', '2']
-        beta = ['4', '3']
-        gama = ['5', '6']
-        eta = ['8', '7']
 
-        self.hyperlapse = SemanticHyperlapse(video, extractor, velocity,
-                                             alpha, beta, gama, eta)
+        self.hyperlapse = SemanticHyperlapse(video, extractor, velocity)
 
     def testExtractor(self):
         self.hyperlapse.checkExtractor()
@@ -35,14 +29,6 @@ class TestHyperlapse(unittest.TestCase):
         self.hyperlapse.velocity = '1'
         self.assertRaises(InputError, self.hyperlapse.checkAndSetVelocity)
 
-    def testCheckWeights(self):
-        self.hyperlapse.checkAndSetWeights()
-        self.hyperlapse.alpha = ['', '']
-        self.assertRaises(InputError, self.hyperlapse.checkAndSetWeights)
-        self.hyperlapse.alpha = ['1', '1']
-        self.hyperlapse.beta = ['a', '10']
-        self.assertRaises(InputError, self.hyperlapse.checkAndSetWeights)
-
     def testOpticalFlowCommand(self):
         command = self.hyperlapse.opticalFlowCommand()
         expectedCommand = './optflow -v /home/victorhugomoura/Documents/example.mp4 ' + \
@@ -51,7 +37,7 @@ class TestHyperlapse(unittest.TestCase):
         self.assertEqual(command, expectedCommand)
 
     def testOpticalFlowExists(self):
-        self.assertTrue(self.hyperlapse.opticalFlowExists()) # works only on Verlab machines
+        self.assertTrue(self.hyperlapse.opticalFlowExists()) # works only if the file already exists
 
     def testCheckVideoInput(self):
         self.hyperlapse.checkVideoInput()
@@ -59,9 +45,6 @@ class TestHyperlapse(unittest.TestCase):
         self.assertRaises(InputError, self.hyperlapse.checkVideoInput)
         self.hyperlapse.video = Video('/home/victorhugomoura/Documents/example.csv')
         self.assertRaises(InputError, self.hyperlapse.checkVideoInput)
-
-    def testCheckParameters(self):
-        self.hyperlapse.checkParameters()
     
     def testInputError(self):
         self.hyperlapse.checkVideoInput()
@@ -102,22 +85,18 @@ class TestStabilizer(unittest.TestCase):
 
     def setUp(self):
         originalVideo = Video('/home/victorhugomoura/Documents/example.mp4')
-        acceleratedVideo = Video('/home/victorhugomoura/Documents/out/example.mp4')
-        self.stabilizer = Stabilizer(originalVideo, acceleratedVideo, '10')
+        acceleratedVideo = Video('/home/victorhugomoura/Documents/Folder With Spaces/example.avi')
+        velocity = 10
+        self.stabilizer = Stabilizer(originalVideo, acceleratedVideo, velocity)
 
-    def testCheckParameters(self):
-        self.stabilizer.checkParameters()
+    def testCorrectPath(self):
+        original = self.stabilizer.originalVideo.file()
+        expected = '"/home/victorhugomoura/Documents/example.mp4"'
+        self.assertEqual(self.stabilizer.correctPath(original), expected)
 
-        self.stabilizer.originalVideo = Video('/home/victorhugomoura/Documents/example.csv')
-        self.assertRaises(InputError, self.stabilizer.checkParameters)
-
-        self.setUp()
-        self.stabilizer.acceleratedVideo = Video('/home/victorhugomoura/Documents/out/example.csv')
-        self.assertRaises(InputError, self.stabilizer.checkParameters)
-
-        self.setUp()
-        self.stabilizer.velocity = '1'
-        self.assertRaises(InputError, self.stabilizer.checkParameters)
+        original = self.stabilizer.acceleratedVideo.file()
+        expected = '"/home/victorhugomoura/Documents/Folder&#32;With&#32;Spaces/example.avi"'
+        self.assertEqual(self.stabilizer.correctPath(original), expected)
 
 if __name__ == '__main__':
     unittest.main()

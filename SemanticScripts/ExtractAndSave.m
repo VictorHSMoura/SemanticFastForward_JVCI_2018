@@ -18,7 +18,7 @@
 
 function [Rects, total_values] = ExtractAndSave(input_filename, extractor)
 
-    addpath(genpath('_EgoSampling_Poleg_CVPR_2015'));
+    addpath(genpath('../'));
 
     %% File name
     [video_dir, fname, ~] = fileparts(input_filename);
@@ -37,13 +37,13 @@ function [Rects, total_values] = ExtractAndSave(input_filename, extractor)
     switch(extractor)
         case 'face'
             %% Face Detector setup (Works with MATLAB 2015a)
-            addpath('_NPDFaceDetector_Liao_PAMI_2016');
+            %% addpath(genpath('_NPDFaceDetector_Liao_PAMI_2016'));
             modelFile = 'model_unconstrain.mat';
             load(modelFile, 'npdModel');
         case 'pedestrian'
             %% Pedestrian Detector setup
             %% load precomputed models
-            addpath('_PedestrianDetector_Piotrs_MATLAB_PMT');
+            %% addpath(genpath('_PedestrianDetector_Piotrs_MATLAB_PMT'));
             inriaModel = load('AcfInriaDetector');
             calModel = load('AcfCaltech+Detector');
             LdcfInriaModel = load('LdcfInriaDetector');

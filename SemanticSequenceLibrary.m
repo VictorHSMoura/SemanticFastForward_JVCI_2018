@@ -97,7 +97,12 @@ classdef SemanticSequenceLibrary
                     endInd   = 884;
                     fps      = 30;
                 otherwise
-                    error(['ERROR: You have specified a non-existent experiment (' exp_name ')']);
+                    filename = exp_name;
+                    startInd = 1;
+                    reader = VideoReader(filename);
+                    endInd = reader.NumberOfFrames;
+                    fps = 30;
+                    % error(['ERROR: You have specified a non-existent experiment (' exp_name ')']);
             end
             
             videoFile = fullfile(video_dir,filename);

@@ -186,7 +186,8 @@ classdef SemanticVideoSubSampler < handle
                 %frame = read(reader,frame_indices(i));
                 frame = readFrame(reader);
                 z = z + 1;
-                if frame_indices(i) ~= z
+
+                if i > length(frame_indices) || frame_indices(i) ~= z
                     continue;
                 end
                 %if read doesn't work, use readframe instead

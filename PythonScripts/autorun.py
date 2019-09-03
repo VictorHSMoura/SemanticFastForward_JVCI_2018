@@ -148,8 +148,7 @@ class MainWindow(object):
         video, speed, extractor = self.preProcess()
 
         try:
-            #TODO: update SemanticHyperlapse object to remove the weights
-            hyperlapse = SemanticHyperlapse(video, extractor, speed, [], [], [], [])           
+            hyperlapse = SemanticHyperlapse(video, extractor, speed)           
             self.createLogWindow()
             hyperlapse.run(self.addLog)
         except InputError as IE:
