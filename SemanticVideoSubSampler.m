@@ -54,14 +54,15 @@ classdef SemanticVideoSubSampler < handle
             eta = obj.cfg.get('SemanticTermWeight');
             
             if(size(alpha, 2) > 1)
-                writer = VideoWriter([obj.cfg.get('outputVideoFileName'), '/', obj.cfg.get('FileName'),...
+                videoName = [obj.cfg.get('outputVideoFileName'), '/', obj.cfg.get('FileName'),...
                     '_S(', alpha(1,1), ',', alpha(1,2), ')_V(', beta(1,1), ',', beta(1,2),...
-                    ')_A(', gamma(1,1), ',', gamma(1,2), ')_M(', eta(1,1), ',', eta(1,2), ')']);
+                    ')_A(', gamma(1,1), ',', gamma(1,2), ')_M(', eta(1,1), ',', eta(1,2), ')'];
             else
-                writer = VideoWriter([obj.cfg.get('outputVideoFileName'), '/', obj.cfg.get('FileName'),...
+                videoName = [obj.cfg.get('outputVideoFileName'), '/', obj.cfg.get('FileName'),...
                     '_S', obj.cfg.get('ShakinessTermWeight'), '_V', obj.cfg.get('VelocityTermWeight'),...
-                    '_A', obj.cfg.get('AppearanceTermWeight'), '_M', obj.cfg.get('SemanticTermWeight')]);
+                    '_A', obj.cfg.get('AppearanceTermWeight'), '_M', obj.cfg.get('SemanticTermWeight')];
             end
+            writer = VideoWriter(videoName);
             writer.FrameRate = obj.cfg.get('FPS');
             
             fprintf('%sStarting to and export frames from dump..\n',log_line_prefix);
@@ -118,7 +119,7 @@ classdef SemanticVideoSubSampler < handle
             fprintf('%sDone exporting pairs..\n',log_line_prefix);
         end
         
-        function subSampleVideo (obj, frame_indices, foe_locations, instability_array, output_video_filename)
+        function videoName = subSampleVideo (obj, frame_indices, foe_locations, instability_array, output_video_filename)
             
             fprintf('%sLoading the input video to memory...\n',log_line_prefix);
             reader = VideoReader(obj.cfg.get('inputVideoFileName'));
@@ -134,14 +135,15 @@ classdef SemanticVideoSubSampler < handle
             eta = obj.cfg.get('SemanticTermWeight');
             
             if(size(alpha, 2) > 1)
-                writer = VideoWriter([output_video_filename, '/', obj.cfg.get('FileName'),...
+                videoName = [output_video_filename, '/', obj.cfg.get('FileName'),...
                     '_S(', num2str(alpha(1,1)), ',', num2str(alpha(1,2)), ')_V(', num2str(beta(1,1)), ',', num2str(beta(1,2)),...
-                    ')_A(', num2str(gamma(1,1)), ',', num2str(gamma(1,2)), ')_M(', num2str(eta(1,1)), ',', num2str(eta(1,2)), ')']);
+                    ')_A(', num2str(gamma(1,1)), ',', num2str(gamma(1,2)), ')_M(', num2str(eta(1,1)), ',', num2str(eta(1,2)), ')'];
             else
-                writer = VideoWriter([output_video_filename, '/', obj.cfg.get('FileName'),...
+                videoName = [output_video_filename, '/', obj.cfg.get('FileName'),...
                     '_S', obj.cfg.get('ShakinessTermWeight'), '_V', obj.cfg.get('VelocityTermWeight'),...
-                    '_A', obj.cfg.get('AppearanceTermWeight'), '_M', obj.cfg.get('SemanticTermWeight')]);
+                    '_A', obj.cfg.get('AppearanceTermWeight'), '_M', obj.cfg.get('SemanticTermWeight')];
             end
+            writer = VideoWriter(videoName);
             writer.FrameRate = reader.FrameRate;
             
             baseFileName = obj.cfg.get('baseDumpFrameFileName');

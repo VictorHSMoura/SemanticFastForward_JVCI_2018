@@ -25,7 +25,7 @@
 %
 % Other arguments (see function parser)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function SpeedupVideo(video_dir, experiment, semantic_extractor, varargin)
+function videoName = SpeedupVideo(video_dir, experiment, semantic_extractor, varargin)
     close all
     warning ('off', 'images:initSize:adjustingMag');
     addpath(genpath(pwd));
@@ -167,7 +167,7 @@ function SpeedupVideo(video_dir, experiment, semantic_extractor, varargin)
     se = SemanticFastForward(sd,cfg, SemanticData, strcmp(algorithm, 'FFSE'),optimize);
 
     fprintf('%sRunning Experiment...\n', log_line_prefix);
-    se.run();
+    videoName = se.run();
 
     shakiness_weights = cfg.get('ShakinessTermWeight');
     velocity_weights = cfg.get('VelocityTermWeight');

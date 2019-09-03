@@ -61,6 +61,3 @@ class Stabilizer(object):
             os.chdir('build')
             os.system('./VideoStabilization ' + "../" + xmlFile)
         write('6/6 - Finished\n', 'title')
-
-
-

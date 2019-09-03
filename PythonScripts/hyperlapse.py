@@ -68,15 +68,6 @@ class SemanticHyperlapse(object):
         
         os.chdir(self.path)
 
-    """def runMatlabSemanticInfo(self, eng): # pragma: no cover
-        videoFile = self.video.file()
-        extractionFile = videoFile[:-4] + '_face_extracted.mat'
-        extractor = self.extractor
-
-        #(aux, nonSemanticFrames, semanticFrames) = eng.GetSemanticRanges(extractionFile, nargout=3)
-
-        return (float(nonSemanticFrames), float(semanticFrames))"""
-
     def getSemanticInfo(self, eng): # pragma: no cover
         eng.cd('SemanticScripts')
         eng.addpath(self.video.path())
@@ -86,23 +77,17 @@ class SemanticHyperlapse(object):
         extractor = self.extractor
         
         eng.ExtractAndSave(videoFile, extractor, nargout=0)
-        # nonSemanticFrames, semanticFrames = self.runMatlabSemanticInfo(eng)
         eng.cd(self.path)
-        # return (nonSemanticFrames, semanticFrames)
 
     def speedUp(self, eng): # pragma: no cover
         eng.addpath(os.getcwd())
         eng.addpath('Util')
-    
-        # (ss, sns) = eng.FindingBestSpeedups(nonSemanticFrames, semanticFrames,
-        #                                     self.velocity, True, nargout=2)
-            
-        # videoName =
-        eng.SpeedupVideo(
+        
+        videoName = eng.SpeedupVideo(
             self.video.path(), self.video.name(), self.extractor,
-            'Speedup', self.velocity, nargout=0
+            'Speedup', self.velocity, nargout=1
         )
-        # return videoName
+        return videoName
 
     def checkParameters(self):	
         self.checkVideoInput()
@@ -122,21 +107,19 @@ class SemanticHyperlapse(object):
         self.getSemanticInfo(eng)
 
         write('4/6 - Speeding-Up Video\n', 'title')
-        # videoName =
-        self.speedUp(eng)
+        videoName = self.speedUp(eng)
         eng.quit()
     
-        # return Video(videoName + '.avi')
+        return Video(videoName + '.avi')
 
-    def stabilizePart(self, acceleratedVideo, writeFunction):
+    def stabilizePart(self, acceleratedVideo, writeFunction): # pragma: no cover
         stabilizer = Stabilizer(self.video, acceleratedVideo, self.velocity)
         stabilizer.run(writeFunction)
         os.chdir(self.path)
 
     def run(self, writeFunction): # pragma: no cover
-        # acceleratedVideo =
-        self.speedUpPart(writeFunction)
-        # self.stabilizePart(acceleratedVideo, writeFunction)
+        acceleratedVideo = self.speedUpPart(writeFunction)
+        self.stabilizePart(acceleratedVideo, writeFunction)
 
     def correctPath(self, path):
         splittedPath = path.split(' ')

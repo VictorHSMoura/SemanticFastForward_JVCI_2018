@@ -56,9 +56,9 @@ classdef SemanticSequenceProducer < handle
             obj.SemanticData = SemanticData;
         end
                 
-        function run(obj)            
+        function videoName = run(obj)
             obj.PreProcess();
-            
+
             obj.PrepareCostTerms();
             
             if obj.optimize
@@ -75,8 +75,10 @@ classdef SemanticSequenceProducer < handle
             
             obj.PostProcess();
             
+            videoName = '';
+
             if obj.cfg.get('SkipVideoOutput')~=1
-                obj.ExportVideo();
+                videoName = obj.ExportVideo();
             else
                 fprintf('%Skipping Video output (''SkipVideoOutput''==%d)\n',log_line_prefix, obj.cfg.get('SkipVideoOutput'));
             end        
@@ -113,10 +115,10 @@ classdef SemanticSequenceProducer < handle
         function PostProcess(obj)
         end
                 
-        function ExportVideo(obj)
+        function videoName = ExportVideo(obj)
             vss = SemanticVideoSubSampler (obj.sd, obj.cfg, obj.SemanticData);
             fprintf('%sWriting %d frames to output video: %s...\n',log_line_prefix, length(obj.Frame_indices), obj.cfg.get('outputVideoFileName'));
-            vss.subSampleVideo(obj.Frame_indices, obj.FOE_locations, obj.Instability_array, obj.cfg.get('outputVideoFileName'));
+            videoName = vss.subSampleVideo(obj.Frame_indices, obj.FOE_locations, obj.Instability_array, obj.cfg.get('outputVideoFileName'));
         end
         
     end

@@ -180,4 +180,3 @@ os.chdir('../') # going to the main project folder
 root = Tk()
 window = MainWindow(root)
 window.start()
-

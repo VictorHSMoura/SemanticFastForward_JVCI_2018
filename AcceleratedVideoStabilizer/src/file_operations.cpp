@@ -351,6 +351,6 @@ bool str2bool(std::string str){
  */
 std::string filter_string(std::string str){
   boost::erase_all(str, "\n");
-  boost::erase_all(str, " ");
+  // boost::erase_all(str, " ");
   return str;
 }
