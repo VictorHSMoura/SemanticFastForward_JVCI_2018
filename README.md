@@ -1,3 +1,6 @@
+[![Version](https://img.shields.io/badge/version-1.0-brightgreen.svg)](https://www.verlab.dcc.ufmg.br/semantic-hyperlapse/jvci2018/)
+[![License](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](LICENSE)
+
 # Project #
 
 This project is based on the paper [Making a long story short: A multi-importance fast-forwarding egocentric videos with the emphasis on relevant objects](https://www.verlab.dcc.ufmg.br/semantic-hyperlapse/jvci2018/) on the **Special Issue on Egocentric Vision and Lifelogging Tools** at **Journal of Visual Communication and Image Representation** (JVCI 2018). It implements a fast-forward method for first-person videos based on multi-importance approach.
@@ -19,22 +22,31 @@ For more information and visual results, please acess the [project page](http://
 
 Federal University of Minas Gerais (UFMG)  
 Computer Science Department  
-Belo Horizonte - Minas Gerais -Brazil 
+Belo Horizonte - Minas Gerais - Brazil 
 
 ### Laboratory ###
 
 ![VeRLab](https://www.dcc.ufmg.br/dcc/sites/default/files/public/verlab-logo.png)  
 
-__VeRLab:__ Vison and Robotic Laboratory  
+__VeRLab:__ Vision and Robotic Laboratory  
 http://www.verlab.dcc.ufmg.br
 
 ## Code ##
 
 ### Dependencies ###
 
-* MATALB 2015a
+* MATLAB 2015a
+* OpenCV 2.4 _(Tested with 2.4.9 and 2.4.13)_
+* Armadillo 6 _(Tested with 6.600.5 -- Catabolic Amalgamator)_
+* Boost 1 _(Tested with 1.54.0 and 1.58.0)_
+* Doxygen 1 _(for documentation only - Tested with 1.8.12)_
 
-### Usage ###
+### **1. I just want to speed-up my video!** ###
+Just follow the steps in  [PythonScripts](PythonScripts) folder.
+
+### **2. I want to speed-up my video and see the process!** ###
+
+#### Usage ####
 
  * The following flowchart depicts the processing steps of our method:
 
@@ -42,14 +54,14 @@ http://www.verlab.dcc.ufmg.br
 
 1. **Optical Flow Estimator:**
 
-    The first step processing is to estimate the Optical Flow of the Input VIdeo. 
+    The first step processing is to estimate the Optical Flow (OF) of the input video. 
 
-    1. First you should download the [Poleg et al. 2014](http://www.cs.huji.ac.il/~peleg/papers/cvpr14-egoseg.pdf) Flow Estimator code from the [link](http://www.vision.huji.ac.il/egoseg/EgoSeg1.2.zip).
-    2. Navigate to the download folder and unzip the code.
-    3. Into the Vid2OpticalFlowCSV\Example folder, run the command:
+    1. The folder Vid2OpticalFlowCSV contains the modified [Poleg et al. 2014](http://www.cs.huji.ac.il/~peleg/papers/cvpr14-egoseg.pdf) Flow Estimator code from the [link](http://www.vision.huji.ac.il/egoseg/EgoSeg1.2.zip) to run in the Linux system.
+    2. Navigate to the folder compile the code.
+    3. Into the Vid2OpticalFlowCSV folder, run the command:
 
 ```bash
-Vid2OpticalFlowCSV.exe -v < video_filename > -c < config.xml > -o < output_filename.csv >
+./optflow -v < video_filename > -c < config.xml > -o < output_filename.csv >
 ```
 
 | Options | Description | Type | Example | 			

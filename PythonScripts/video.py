@@ -22,7 +22,7 @@ class Video(object):
         return False
 
     def isInvalid(self):
-        if self.videofile[-3:] not in ['mp4', 'avi']:
+        if self.videofile[-3:].lower() not in ['mp4', 'avi']:
             return True
         return False
 
